@@ -48,4 +48,3 @@ Note: Please read the comments carefully
 Assessment of skills on pluralsight:
 https://monosnap.com/file/72svSvlttGXKWbVlteFuO6Ap0to9gr
 
-	- how to deal with transactions & setup isolation levels
