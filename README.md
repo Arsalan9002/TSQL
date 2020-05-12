@@ -43,3 +43,9 @@ https://drive.google.com/drive/folders/1U6k2TOpyjfLpRV3rknq2t8TX6ifHio8u?usp=sha
 - Open Azure Data Studio and connect
 
 Note: Please read the comments carefully
+
+
+Assessment of skills on pluralsight:
+https://monosnap.com/file/72svSvlttGXKWbVlteFuO6Ap0to9gr
+
+	- how to deal with transactions & setup isolation levels
