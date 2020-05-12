@@ -18,6 +18,12 @@ This Repo is contains Transact-SQL and sample SQL snippets related to all its co
 	- contains queries on how Stored procedures work in TSql
 	- how SPs reuse the execution plan as compared to adhoc TSQL statements to improve performance
 	- parameter sniffing in SPs
+	
+- tsql_error_handling.sql
+	- contains error handling methods in tsql (try/catch, raiserror)
+	- how to deal with transactions & setup isolation levels
+	- how we can leverage an error log table for the errors
+	- calling proc in catch block
 
 Tools Used:
 - Azure Data Studio
