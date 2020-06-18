@@ -51,3 +51,36 @@ select d.DepartmentName,e.Name,e.Gender,e.Salary from Department d left join fn_
 --Replace inner join operator with cross apply operator. Dont need join condition.
 select d.DepartmentName,e.Name,e.Gender,e.Salary from Department d cross apply fn_ReturnDepartmentName(d.Id) e
 select d.DepartmentName,e.Name,e.Gender,e.Salary from Department d Outer apply fn_ReturnDepartmentName(d.Id) e
+
+
+-- Calculating Age properly 
+Select DATEDIFF(YEAR, '11/30/1995','01/31/2006') -- difference in years between these two dates is 11 years, which is OK
+Select DATEDIFF(YEAR, '11/30/2005','01/31/2006') -- difference in years between these two dates is 1 year, but looking at both dates difference is not 1 year
+
+
+
+CREATE FUNCTION fn_ComputeFullAge (@DOB datetime)
+RETURNS NVARCHAR(50)
+    AS
+    BEGIN
+        Declare @tempdate datetime, @years int ,@days int, @months int
+        SET @tempdate = @DOB
+
+        SELECT @years = DATEDIFF(YEAR,@DOB, GETDATE()) - 
+                        (CASE WHEN (MONTH(@DOB) > MONTH(GETDATE())) OR (MONTH(@DOB) = MONTH(GETDATE()) AND DAY(@DOB)> DAY(GETDATE())) THEN 1 ELSE 0 END)
+        SELECT @tempdate = DATEADD(YEAR,@years,@tempdate)
+
+        SELECT @months = DATEDIFF(MONTH, @DOB, GETDATE()) - (CASE WHEN DAY(@DOB) > DAY(GETDATE()) THEN 1 ELSE 0 END)
+        SELECT @tempdate = DATEADD(MONTH,@months,@tempdate)
+
+        SELECT @days = DATEDIFF(DAY,@DOB,GETDATE())
+
+        DECLARE @Age NVARCHAR(50)
+        Set @Age = CONCAT_WS(' ',@years,@months,@days)
+        RETURN @Age
+
+    END
+
+
+select fn_ComputeFullAge('12/30/2019')
+
