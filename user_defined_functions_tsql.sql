@@ -123,3 +123,42 @@ select * from fn_GetEmployeeList(5000)
 update fn_GetEmployeeList('5000') set Name='Mark' where Id=1  
 -- invalid column because it is not running update against actual underlying table.
 -- cannot modify objects even if we use the column names of the temporary table that is returned by the function
+
+sp_helptext fn_GetEmployeeList -- get the function definition as text
+
+
+--Schema Binding
+-- If the underlying table gets deleted, then function would also become invalid. So, we need to prevent changes (like drop table) for the underlying tables
+
+drop table Employee  -- execute it 
+SELECT * from   fn_GetEmployeeDetails(50000)  -- calling function now would give invalid object error
+
+--lets re-create the table again and schema bind it
+Create table Employee
+(
+    Id int primary key,
+    Name nvarchar(50),
+    Gender nvarchar(10),
+    Salary int,
+    DepartmentId int foreign key references Department(Id)
+)
+Go
+
+Insert into Employee values (1, 'Mark', 'Male', 50000, 1)
+Insert into Employee values (2, 'Mary', 'Female', 60000, 3)
+Insert into Employee values (3, 'Steve', 'Male', 45000, 2)
+Insert into Employee values (4, 'John', 'Male', 56000, 1)
+Insert into Employee values (5, 'Sara', 'Female', 39000, 2)
+Go
+
+
+Alter FUNCTION fn_GetEmployeeDetails (@Salary int)
+RETURNS TABLE
+WITH SCHEMABINDING
+as 
+RETURN (SELECT Id,Name,Gender,Salary FROM dbo.Employee WHERE Salary>=@Salary)  -- remember to use dbo in select when schemabinding
+
+
+drop table Employee  -- executing it would not allow to drop the underlying table now
+
+
