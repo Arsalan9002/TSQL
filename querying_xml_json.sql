@@ -1,6 +1,6 @@
 USE [tsql-xml-json]
 
-
+select top 1 * from posts
 -- getting strctured data out of semi-structured data
 SELECT  
     JSON_VALUE(Post_json,'$.Post.Id') as jsonid, -- JSON_VALUE returns single value of type nvarchar(4000)
@@ -492,4 +492,3 @@ insert into PostsTemporal(
     Id, CreationDate, ViewCount,Body, OwnerUserId,LastActivityDate,title,tags, AnswerCount,CommentCount,FavoriteCount)
 select Id, CreationDate, ViewCount,Body, OwnerUserId,LastActivityDate,title,tags, AnswerCount,CommentCount,FavoriteCount
     from PostsTemporal for system_time AS OF '2020-05-04 06:44:08'
-
